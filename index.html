@@ -20,8 +20,8 @@
     --red: #EA4E3E;
     --text: #FFFFFF;
     --text2: #BFBFBF;
-    --text3: #717171;
-    --text4: #3a3a3a;
+    --text3: #A0A0A0;
+    --text4: #6a6a6a;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -124,7 +124,7 @@
     z-index: 100;
     display: none;
     box-shadow: 0 24px 64px rgba(0,0,0,0.7);
-    max-height: 340px;
+    max-height: 480px;
     overflow-y: auto;
   }
   .search-dropdown::-webkit-scrollbar { display: none; }
@@ -135,7 +135,7 @@
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.5px;
-    color: #3a3a3a;
+    color: #6a6a6a;
     padding: 11px 14px 6px;
   }
 
@@ -580,19 +580,6 @@
   .nav-fab:hover { transform: scale(1.08); box-shadow: 0 8px 28px rgba(176,230,126,0.45); }
   .nav-fab i { font-size: 22px; color: var(--black); }
 
-  /* PAGE INDICATOR (desktop context) */
-  .desktop-label {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    color: #555;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    pointer-events: none;
-  }
 
   /* ANIMATIONS */
   @keyframes fadeIn {
@@ -601,12 +588,47 @@
   }
   .hero-card { animation: fadeIn 0.4s ease; }
 
+  /* CIRCULAR MENU */
+  .circular-menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: none;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .menu-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+  }
+  .menu-item:hover { transform: scale(1.1); background: var(--green); color: var(--black); }
+  .menu-item i { font-size: 18px; }
+
   /* Responsive */
   @media (max-width: 500px) {
     body { padding: 0; align-items: stretch; }
     .phone { width: 100%; border-radius: 0; min-height: 100vh; box-shadow: none; border: none; }
     .scroll-view { height: calc(100vh - 82px); }
-    .desktop-label { display: none; }
   }
 </style>
 </head>
@@ -693,8 +715,6 @@
   </div>
 </div>
 
-<div class="desktop-label">LIBRARY · INTERACTIVE MOCKUP</div>
-
 <script>
 // ── HELPERS ───────────────────────────────────────────────────
 function imgUrl(seed, w, h) { return `https://picsum.photos/seed/${seed}/${w}/${h}`; }
@@ -717,24 +737,24 @@ const TODAY_IDX = 7; // index of today's film in the array
 
 const filmsRaw = [
   // released (offset = days before today)
-  { title: 'Sátántangó',               meta: '1994 · Béla Tarr · 432 min',         host: 'Marina R.', av: 'MR', offset: -29, upcoming: false, watched: true,  live: false, seed: 'satantango', reason: 'Slow Cinema Masterpiece' },
-  { title: 'Jeanne Dielman',           meta: '1975 · Chantal Akerman · 201 min',   host: 'Ana L.',    av: 'AL', offset: -25, upcoming: false, watched: true,  live: false, seed: 'jeannedielman', reason: 'Feminist Classic' },
-  { title: 'The White Ribbon',         meta: '2009 · Michael Haneke · 144 min',    host: 'Carlos S.', av: 'CS', offset: -22, upcoming: false, watched: true,  live: false, seed: 'whiteribbon', reason: 'Award Winner' },
-  { title: 'Capernaum',                meta: '2018 · Nadine Labaki · 121 min',     host: 'Marina R.', av: 'MR', offset: -18, upcoming: false, watched: true,  live: false, seed: 'capernaum', reason: 'Oscar Nominee' },
-  { title: 'Burning',                  meta: '2018 · Lee Chang-dong · 148 min',    host: 'João P.',   av: 'JP', offset: -15, upcoming: false, watched: true,  live: false, seed: 'burningfilm', reason: 'Cannes Winner' },
-  { title: 'Roma',                     meta: '2018 · Alfonso Cuarón · 135 min',    host: 'Beatriz T.',av: 'BT', offset: -11, upcoming: false, watched: true,  live: true,  seed: 'romacuaron', reason: 'All Time Favorite' },
-  { title: 'Shoplifters',              meta: '2018 · Hirokazu Kore-eda · 121 min', host: 'Carlos S.', av: 'CS', offset:  -7, upcoming: false, watched: true,  live: false, seed: 'shoplifters', reason: 'Palme d\'Or Winner' },
-  { title: 'The Mirror',               meta: '1975 · Andrei Tarkovsky · 108 min',  host: 'João P.',   av: 'JP', offset:   0, upcoming: false, watched: false, live: false, seed: 'themirror', reason: 'All Time Favorite' },
+  { title: 'Sátántangó',               meta: '1994 · Béla Tarr · 432 min',         host: 'Marina R.', av: 'MR', offset: -7, upcoming: false, watched: true,  live: false, seed: 'satantango', reason: 'Slow Cinema Masterpiece', watchlist: false },
+  { title: 'Jeanne Dielman',           meta: '1975 · Chantal Akerman · 201 min',   host: 'Ana L.',    av: 'AL', offset: -6, upcoming: false, watched: true,  live: false, seed: 'jeannedielman', reason: 'Feminist Classic', watchlist: false },
+  { title: 'The White Ribbon',         meta: '2009 · Michael Haneke · 144 min',    host: 'Carlos S.', av: 'CS', offset: -5, upcoming: false, watched: true,  live: false, seed: 'whiteribbon', reason: 'Award Winner', watchlist: false },
+  { title: 'Capernaum',                meta: '2018 · Nadine Labaki · 121 min',     host: 'Marina R.', av: 'MR', offset: -4, upcoming: false, watched: true,  live: false, seed: 'capernaum', reason: 'Oscar Nominee', watchlist: false },
+  { title: 'Burning',                  meta: '2018 · Lee Chang-dong · 148 min',    host: 'João P.',   av: 'JP', offset: -3, upcoming: false, watched: true,  live: false, seed: 'burningfilm', reason: 'Cannes Winner', watchlist: false },
+  { title: 'Roma',                     meta: '2018 · Alfonso Cuarón · 135 min',    host: 'Beatriz T.',av: 'BT', offset: -2, upcoming: false, watched: true,  live: true,  seed: 'romacuaron', reason: 'All Time Favorite', watchlist: false },
+  { title: 'Shoplifters',              meta: '2018 · Hirokazu Kore-eda · 121 min', host: 'Carlos S.', av: 'CS', offset: -1, upcoming: false, watched: true,  live: false, seed: 'shoplifters', reason: 'Palme d\'Or Winner', watchlist: false },
+  { title: 'The Mirror',               meta: '1975 · Andrei Tarkovsky · 108 min',  host: 'João P.',   av: 'JP', offset:  0, upcoming: false, watched: false, live: false, seed: 'themirror', reason: 'All Time Favorite', watchlist: false },
   // upcoming (offset = days after today)
-  { title: 'Portrait of a Lady on Fire', meta: '2019 · Céline Sciamma · 119 min', host: 'Marina R.', av: 'MR', offset:  +1, upcoming: true,  watched: false, live: false, seed: 'portraitfire', reason: 'Queer Romance' },
-  { title: 'Beau Travail',             meta: '1999 · Claire Denis · 92 min',       host: 'Ana L.',    av: 'AL', offset:  +2, upcoming: true,  watched: false, live: false, seed: 'beautravail', reason: 'Art House Gem' },
-  { title: 'Moonlight',                meta: '2016 · Barry Jenkins · 111 min',     host: 'João P.',   av: 'JP', offset:  +4, upcoming: true,  watched: false, live: false, seed: 'moonlightfilm', reason: 'Best Picture Winner' },
-  { title: 'Mulholland Drive',         meta: '2001 · David Lynch · 147 min',       host: 'Beatriz T.',av: 'BT', offset:  +6, upcoming: true,  watched: false, live: false, seed: 'mulholland', reason: 'Surreal Masterpiece' },
-  { title: 'La Ciénaga',               meta: '2001 · Lucrecia Martel · 103 min',   host: 'Carlos S.', av: 'CS', offset:  +7, upcoming: true,  watched: false, live: false, seed: 'lacienaga', reason: 'Latin American Cinema' },
-  { title: 'Yi Yi',                    meta: '2000 · Edward Yang · 173 min',       host: 'Marina R.', av: 'MR', offset:  +8, upcoming: true,  watched: false, live: false, seed: 'yiyifilm', reason: 'Taiwanese Classic' },
-  { title: 'Under the Skin',           meta: '2013 · Jonathan Glazer · 108 min',   host: 'Ana L.',    av: 'AL', offset:  +9, upcoming: true,  watched: false, live: false, seed: 'undertheskin', reason: 'Sci-Fi Horror' },
-  { title: 'Aftersun',                 meta: '2022 · Charlotte Wells · 101 min',   host: 'João P.',   av: 'JP', offset: +10, upcoming: true,  watched: false, live: false, seed: 'aftersun', reason: 'Critically Acclaimed' },
-  { title: 'The Zone of Interest',     meta: '2023 · Jonathan Glazer · 105 min',   host: 'Beatriz T.',av: 'BT', offset: +12, upcoming: true,  watched: false, live: false, seed: 'zoneofinterest', reason: 'Oscar Winner' },
+  { title: 'Portrait of a Lady on Fire', meta: '2019 · Céline Sciamma · 119 min', host: 'Marina R.', av: 'MR', offset: +1, upcoming: true,  watched: false, live: false, seed: 'portraitfire', reason: 'Queer Romance', watchlist: false },
+  { title: 'Beau Travail',             meta: '1999 · Claire Denis · 92 min',       host: 'Ana L.',    av: 'AL', offset: +2, upcoming: true,  watched: false, live: false, seed: 'beautravail', reason: 'Art House Gem', watchlist: false },
+  { title: 'Moonlight',                meta: '2016 · Barry Jenkins · 111 min',     host: 'João P.',   av: 'JP', offset: +3, upcoming: true,  watched: false, live: false, seed: 'moonlightfilm', reason: 'Best Picture Winner', watchlist: false },
+  { title: 'Mulholland Drive',         meta: '2001 · David Lynch · 147 min',       host: 'Beatriz T.',av: 'BT', offset: +4, upcoming: true,  watched: false, live: false, seed: 'mulholland', reason: 'Surreal Masterpiece', watchlist: false },
+  { title: 'La Ciénaga',               meta: '2001 · Lucrecia Martel · 103 min',   host: 'Carlos S.', av: 'CS', offset: +5, upcoming: true,  watched: false, live: false, seed: 'lacienaga', reason: 'Latin American Cinema', watchlist: false },
+  { title: 'Yi Yi',                    meta: '2000 · Edward Yang · 173 min',       host: 'Marina R.', av: 'MR', offset: +6, upcoming: true,  watched: false, live: false, seed: 'yiyifilm', reason: 'Taiwanese Classic', watchlist: false },
+  { title: 'Under the Skin',           meta: '2013 · Jonathan Glazer · 108 min',   host: 'Ana L.',    av: 'AL', offset: +7, upcoming: true,  watched: false, live: false, seed: 'undertheskin', reason: 'Sci-Fi Horror', watchlist: false },
+  { title: 'Aftersun',                 meta: '2022 · Charlotte Wells · 101 min',   host: 'João P.',   av: 'JP', offset: +8, upcoming: true,  watched: false, live: false, seed: 'aftersun', reason: 'Critically Acclaimed', watchlist: false },
+  { title: 'The Zone of Interest',     meta: '2023 · Jonathan Glazer · 105 min',   host: 'Beatriz T.',av: 'BT', offset: +9, upcoming: true,  watched: false, live: false, seed: 'zoneofinterest', reason: 'Oscar Winner', watchlist: false },
 ];
 
 // Enrich with computed dates + image URLs
@@ -811,9 +831,25 @@ function buildPosterScroll() {
         <div class="poster-inner-grad">
           <div class="poster-inner-title">${f.title}</div>
         </div>
+        <div class="circular-menu" id="menu-${i}">
+          <div class="menu-item watchlist" onclick="toggleWatchlist(${i})"><i class="ti ti-bookmark"></i></div>
+          <div class="menu-item watched" onclick="toggleWatched(${i})"><i class="ti ti-eye"></i></div>
+        </div>
       </div>
     `;
     item.addEventListener('click', () => selectFilm(i));
+    // Long press for menu
+    let longPressTimer;
+    item.addEventListener('touchstart', (e) => {
+      longPressTimer = setTimeout(() => showMenu(i), 500);
+    });
+    item.addEventListener('touchend', () => clearTimeout(longPressTimer));
+    item.addEventListener('touchmove', () => clearTimeout(longPressTimer));
+    item.addEventListener('mousedown', (e) => {
+      if (e.button === 0) longPressTimer = setTimeout(() => showMenu(i), 500);
+    });
+    item.addEventListener('mouseup', () => clearTimeout(longPressTimer));
+    item.addEventListener('mouseleave', () => clearTimeout(longPressTimer));
     scroll.appendChild(item);
   });
 }
@@ -865,6 +901,44 @@ function centerToday() {
   scroll.scrollLeft = Math.max(0, paddingL + TODAY_IDX * itemW - scrollW / 2 + 40);
 }
 
+// ── CIRCULAR MENU ──────────────────────────────────────────────
+function showMenu(i) {
+  hideAllMenus();
+  const menu = document.getElementById(`menu-${i}`);
+  menu.style.display = 'flex';
+  // Hide on click outside
+  setTimeout(() => {
+    document.addEventListener('click', hideAllMenus, { once: true });
+  }, 10);
+}
+
+function hideAllMenus() {
+  document.querySelectorAll('.circular-menu').forEach(m => m.style.display = 'none');
+}
+
+function toggleWatchlist(i) {
+  films[i].watchlist = !films[i].watchlist;
+  // Optional: visual feedback, e.g., change icon color
+  hideAllMenus();
+}
+
+function toggleWatched(i) {
+  films[i].watched = !films[i].watched;
+  // Update poster-watched dot
+  const item = document.querySelector(`#posterScroll .poster-item:nth-child(${i+1})`);
+  const dot = item.querySelector('.poster-watched');
+  if (films[i].watched && !films[i].upcoming) {
+    if (!dot) {
+      const newDot = document.createElement('div');
+      newDot.className = 'poster-watched';
+      item.querySelector('.poster-img-wrap').appendChild(newDot);
+    }
+  } else {
+    if (dot) dot.remove();
+  }
+  hideAllMenus();
+}
+
 // ── SEARCH ────────────────────────────────────────────────────
 function highlight(text, q) {
   const i = text.toLowerCase().indexOf(q.toLowerCase());
@@ -885,13 +959,13 @@ const allItems = [
   { type:'film', title:'Mulholland Drive',         sub:'2001 · David Lynch',      seed:'mulholland',   weight:6  },
   { type:'film', title:'Sátántangó',               sub:'1994 · Béla Tarr',        seed:'satantango',   weight:6  },
   // keywords (weight = film count proxy)
-  { type:'kw', title:'Romance',    sub:'Mood · 4 films',  icon:'ti-heart',          weight:8 },
-  { type:'kw', title:'Identity',   sub:'Theme · 8 films', icon:'ti-fingerprint',    weight:9 },
-  { type:'kw', title:'Memory',     sub:'Theme · 6 films', icon:'ti-brain',          weight:7 },
-  { type:'kw', title:'Slow Cinema',sub:'Genre · 5 films', icon:'ti-ripple',         weight:6 },
-  { type:'kw', title:'Korean New Wave',sub:'Movement · 4 films',icon:'ti-movie',    weight:7 },
-  { type:'kw', title:'Politics',   sub:'Theme · 7 films', icon:'ti-building-bank',  weight:8 },
-  { type:'kw', title:'Melancholic',sub:'Mood · 8 films',  icon:'ti-cloud-rain',     weight:9 },
+  { type:'kw', title:'Romance',    sub:'Mood',  icon:'ti-heart',          weight:8 },
+  { type:'kw', title:'Identity',   sub:'Theme', icon:'ti-fingerprint',    weight:9 },
+  { type:'kw', title:'Memory',     sub:'Theme', icon:'ti-brain',          weight:7 },
+  { type:'kw', title:'Slow Cinema',sub:'Genre', icon:'ti-ripple',         weight:6 },
+  { type:'kw', title:'Korean New Wave',sub:'Movement',icon:'ti-movie',    weight:7 },
+  { type:'kw', title:'Politics',   sub:'Theme', icon:'ti-building-bank',  weight:8 },
+  { type:'kw', title:'Melancholic',sub:'Mood',  icon:'ti-cloud-rain',     weight:9 },
   // hosts
   { type:'host', title:'João P.',    sub:'5 films this month', photo:'https://randomuser.me/api/portraits/men/32.jpg',    weight:9 },
   { type:'host', title:'Marina R.',  sub:'3 films this month', photo:'https://randomuser.me/api/portraits/women/44.jpg',  weight:8 },
@@ -900,8 +974,10 @@ const allItems = [
   { type:'host', title:'Beatriz T.', sub:'2 films this month', photo:'https://randomuser.me/api/portraits/women/58.jpg',  weight:6 },
 ];
 
-// Trending = top items by weight, mixed types
-const trending = [...allItems].sort((a,b) => b.weight - a.weight).slice(0, 7);
+// Trending = top items by weight, mixed types, always include top host
+const trendingBase = [...allItems].sort((a,b) => b.weight - a.weight);
+const topHost = trendingBase.filter(item => item.type === 'host')[0];
+const trending = trendingBase.filter(item => item.type !== 'host').slice(0, 6).concat([topHost]);
 
 function ddItemHTML(item, q) {
   const titleHTML = q ? highlight(item.title, q) : item.title;
@@ -913,7 +989,6 @@ function ddItemHTML(item, q) {
     </div>`;
   } else if (item.type === 'kw') {
     return `<div class="dd-item">
-      <div class="dd-kw-icon"><i class="ti ${item.icon}"></i></div>
       <div class="dd-info"><div class="dd-title">${titleHTML}</div><div class="dd-sub">${item.sub}</div></div>
       <span class="dd-tag kw">KEYWORD</span>
     </div>`;
