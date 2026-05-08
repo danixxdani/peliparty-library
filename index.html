@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+  :root {
+    --black: #0d0d0d;
+    --black2: #121212;
+    --card: #1C1C1C;
+    --border: #2a2a2a;
+    --green: #B0E67E;
+    --green-dark: #008E64;
+    --lilac: #B8C3FF;
+    --red: #EA4E3E;
+    --text: #FFFFFF;
+    --text2: #BFBFBF;
+    --text3: #717171;
+    --text4: #3a3a3a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 32px 16px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* PHONE SHELL */
+  .phone {
+    width: 390px;
+    min-height: 844px;
+    background: var(--black);
+    border-radius: 48px;
+    border: 2px solid #2a2a2a;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1px #333;
+  }
+
+  .notch {
+    width: 120px;
+    height: 34px;
+    background: #000;
+    border-radius: 0 0 20px 20px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  .statusbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 24px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .statusbar-right { display: flex; gap: 5px; align-items: center; }
+  .statusbar-right i { font-size: 14px; }
+
+  /* SCROLL CONTAINER */
+  .scroll-view {
+    overflow-y: auto;
+    height: calc(844px - 82px);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 90px;
+  }
+  .scroll-view::-webkit-scrollbar { display: none; }
+
+  /* TOP HEADER */
+  /* SEARCH */
+  .search-wrap { padding: 14px 20px 0; position: relative; }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 15px;
+    transition: border-color 0.2s;
+    cursor: text;
+  }
+
+  .search-bar.active { border-color: var(--green); }
+  .search-bar i { font-size: 17px; color: var(--text4); flex-shrink: 0; transition: color 0.2s; }
+  .search-bar.active i { color: var(--green); }
+  .search-bar input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+  }
+  .search-bar input::placeholder { color: var(--text4); }
+  .clear-btn { font-size: 16px; color: var(--text3); cursor: pointer; flex-shrink: 0; display: none; }
+
+  /* DROPDOWN */
+  .search-dropdown {
+    position: absolute;
+    left: 20px; right: 20px; top: calc(100% + 6px);
+    background: #181818;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    overflow: hidden;
+    z-index: 100;
+    display: none;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.7);
+    max-height: 340px;
+    overflow-y: auto;
+  }
+  .search-dropdown::-webkit-scrollbar { display: none; }
+  .search-dropdown.show { display: block; }
+
+  /* trending label at top */
+  .dd-header {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #3a3a3a;
+    padding: 11px 14px 6px;
+  }
+
+  .dd-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    border-bottom: 1px solid #1e1e1e;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .dd-item:last-child { border-bottom: none; }
+  .dd-item:active { background: #222; }
+
+  /* film: portrait thumb */
+  .dd-thumb {
+    width: 32px;
+    height: 46px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--card);
+  }
+
+  /* keyword: rounded square icon */
+  .dd-kw-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #1a1a2e;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: var(--lilac);
+  }
+
+  /* host: circle avatar */
+  .dd-host-av {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1.5px solid #2a2a2a;
+  }
+
+  .dd-info { flex: 1; min-width: 0; }
+  .dd-title { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dd-sub { font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+  /* small type pill — right side */
+  .dd-tag { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 20px; flex-shrink: 0; letter-spacing: 0.3px; }
+  .dd-tag.film { background: rgba(0,142,100,0.18); color: #00c97a; }
+  .dd-tag.kw   { background: rgba(184,195,255,0.12); color: var(--lilac); }
+  .dd-tag.host { background: rgba(176,230,126,0.10); color: var(--green); }
+  .hi { color: var(--green); }
+
+  /* TODAY HERO */
+  .hero-section { padding: 16px 20px 0; }
+
+  .hero-card {
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    height: 220px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .hero-card:active { transform: scale(0.98); }
+
+  .hero-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 70%, rgba(0,0,0,0.97) 100%);
+  }
+
+  .hero-top {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .today-pill {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    transition: all 0.3s;
+  }
+  .today-pill.today { background: var(--green); color: var(--black); }
+  .today-pill.released { background: var(--green-dark); color: #fff; }
+  .today-pill.upcoming { background: var(--card); color: var(--text3); border: 1px solid var(--border); }
+
+  .hero-day-label { font-size: 10px; color: rgba(255,255,255,0.45); font-weight: 500; }
+
+  .hero-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 14px 14px;
+  }
+
+  .hero-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    transition: all 0.3s;
+  }
+
+  .hero-meta { font-size: 11px; color: var(--text2); margin-top: 4px; transition: all 0.3s; }
+
+  .hero-host-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 5px;
+  }
+
+  .host-av {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #252525;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--green);
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .host-av img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+  .hero-host-name { font-size: 11px; color: var(--green-dark); }
+
+  .watch-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    background: var(--green);
+    color: var(--black);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    border: none;
+  }
+  .watch-btn:hover { background: #c8ff8e; transform: scale(1.02); }
+  .watch-btn.notify { background: var(--card); color: var(--green); border: 1px solid var(--border); }
+
+  /* POSTER SCROLL */
+
+  .poster-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 14px 20px 16px;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  .poster-scroll::-webkit-scrollbar { display: none; }
+
+  .poster-item {
+    flex: 0 0 80px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .poster-img-wrap {
+    width: 80px;
+    height: 116px;
+    border-radius: 11px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  }
+  .poster-img-wrap:active { transform: scale(0.95); }
+
+  .poster-item.today .poster-img-wrap {
+    border-color: var(--green);
+    box-shadow: 0 0 16px rgba(176,230,126,0.35);
+  }
+  .poster-item.selected .poster-img-wrap {
+    border-color: rgba(255,255,255,0.6);
+  }
+  .poster-item.upcoming .poster-img-wrap { opacity: 0.45; }
+
+  .poster-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .poster-lock {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    font-size: 18px;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .live-badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background: var(--red);
+    color: #fff;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 5px;
+    letter-spacing: 0.3px;
+  }
+
+  /* POSTER INFO — everything inside the card */
+  .poster-bottom { display: none; } /* title now lives inside poster */
+
+  /* bottom gradient + title inside poster */
+  .poster-inner-grad {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 22px 7px 7px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.88));
+    border-radius: 0 0 9px 9px;
+  }
+  .poster-inner-title {
+    font-size: 8.5px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .poster-item.today .poster-inner-title { color: var(--green); }
+
+  /* date — top-left corner, subtle */
+  .poster-date-badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 5px;
+    padding: 2px 5px;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .poster-date-badge .pday { font-size: 7px; color: rgba(255,255,255,0.45); font-weight: 500; letter-spacing: 0.2px; }
+  .poster-date-badge .pnum { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.85); }
+  .poster-item.today .poster-date-badge {
+    background: rgba(176,230,126,0.22);
+    border-color: rgba(176,230,126,0.45);
+  }
+  .poster-item.today .poster-date-badge .pday { color: rgba(176,230,126,0.7); }
+  .poster-item.today .poster-date-badge .pnum { color: var(--green); }
+
+  /* watched — tiny dot bottom-right, non-intrusive */
+  .poster-watched {
+    position: absolute;
+    bottom: 7px;
+    right: 7px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green-dark);
+    box-shadow: 0 0 0 1.5px rgba(0,0,0,0.4);
+  }
+
+  /* SECTION */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 18px 20px 12px;
+  }
+  .section-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.4px;
+  }
+  .section-link { font-size: 12px; color: var(--green-dark); font-weight: 500; }
+
+  /* EXPLORE SECTION */
+  /* Level 1 tabs */
+  .explore-l1 {
+    display: flex;
+    gap: 6px;
+    padding: 0 20px;
+    overflow-x: auto;
+  }
+  .explore-l1::-webkit-scrollbar { display: none; }
+  .el1-tab {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: var(--text3);
+    background: transparent;
+    border: 1.5px solid var(--border);
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+  .el1-tab.active {
+    background: var(--green);
+    color: var(--black);
+    border-color: var(--green);
+  }
+
+  /* Level 2 chips */
+  .explore-l2 {
+    display: flex;
+    gap: 8px;
+    padding: 10px 20px 4px;
+    overflow-x: auto;
+    flex-wrap: wrap;
+  }
+  .explore-l2::-webkit-scrollbar { display: none; }
+  .el2-chip {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 13px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: var(--text2);
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition: all 0.15s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .el2-chip:hover { border-color: var(--green-dark); }
+  .el2-chip.active {
+    background: rgba(0,142,100,0.12);
+    border-color: #008E64;
+  }
+  .el2-chip.active i { color: var(--green); }
+  .el2-chip.active .lbl { color: var(--green); }
+
+  /* L3 sub-chips — pill shape, different from L2 */
+  .el3-chip {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 5px 11px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: var(--text3);
+    background: transparent;
+    border: 1px solid #2a2a2a;
+    transition: all 0.15s;
+    white-space: nowrap;
+    animation: chipIn 0.16s ease both;
+  }
+  .el3-chip:hover { border-color: var(--green); color: var(--text2); }
+  .el3-chip.active { border-color: var(--green); color: var(--green); background: rgba(176,230,126,0.08); }
+  @keyframes chipIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 12px 0 28px;
+    border-top: 1px solid var(--card);
+    background: rgba(13,13,13,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 9px;
+    color: var(--text3);
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .nav-item i { font-size: 22px; }
+  .nav-item.active { color: var(--green); }
+
+  .nav-fab {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -18px;
+    box-shadow: 0 6px 20px rgba(176,230,126,0.35);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .nav-fab:hover { transform: scale(1.08); box-shadow: 0 8px 28px rgba(176,230,126,0.45); }
+  .nav-fab i { font-size: 22px; color: var(--black); }
+
+  /* PAGE INDICATOR (desktop context) */
+  .desktop-label {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #555;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-card { animation: fadeIn 0.4s ease; }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    body { padding: 0; align-items: stretch; }
+    .phone { width: 100%; border-radius: 0; min-height: 100vh; box-shadow: none; border: none; }
+    .scroll-view { height: calc(100vh - 82px); }
+    .desktop-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span>9:30</span>
+    <div class="statusbar-right">
+      <i class="ti ti-wifi"></i>
+      <i class="ti ti-signal-3g"></i>
+      <i class="ti ti-battery-2"></i>
+    </div>
+  </div>
+
+  <div class="scroll-view">
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <div class="search-bar" id="searchBar">
+        <i class="ti ti-search" id="searchIcon"></i>
+        <input type="text" id="searchInput" placeholder="Search anything…" autocomplete="off">
+        <i class="ti ti-x clear-btn" id="clearBtn"></i>
+      </div>
+      <div class="search-dropdown" id="searchDropdown"></div>
+    </div>
+
+    <!-- TODAY HERO -->
+    <div class="hero-section">
+      <div class="hero-card" id="heroCard">
+        <img id="heroPoster" class="hero-poster" src="" alt="">
+        <div class="hero-overlay"></div>
+        <div class="hero-top">
+          <div class="today-pill today" id="heroPill">TODAY</div>
+          <div class="hero-day-label" id="heroDay">MAY 8</div>
+        </div>
+        <div class="hero-content">
+          <div class="hero-title" id="heroTitle">The Mirror</div>
+          <div class="hero-meta" id="heroMeta">1975 · Andrei Tarkovsky · 108 min · Drama</div>
+          <div class="hero-host-row">
+            <div class="host-av" id="heroAv"><img id="heroAvImg" src="" alt="host" onerror="this.style.display='none'"></div>
+            <span class="hero-host-name" id="heroHostName">curated by João P.</span>
+          </div>
+          <button class="watch-btn" id="heroBtn">
+            <i class="ti ti-player-play" style="font-size:11px"></i>
+            <span id="heroBtnText">Watch now</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POSTER TIMELINE -->
+    <div class="poster-scroll" id="posterScroll">
+      <!-- filled by JS -->
+    </div>
+
+    <!-- EXPLORE -->
+    <div class="section-header">
+      <span class="section-title">Explore</span>
+    </div>
+
+    <!-- Level 1 tabs -->
+    <div class="explore-l1" id="exploreL1">
+      <div class="el1-tab active" onclick="setL1('genre')">Genre</div>
+      <div class="el1-tab" onclick="setL1('mood')">Mood</div>
+      <div class="el1-tab" onclick="setL1('theme')">Theme</div>
+      <div class="el1-tab" onclick="setL1('guide')">Guide</div>
+    </div>
+
+    <!-- Level 2 chips (dynamic) -->
+    <div class="explore-l2" id="exploreL2"></div>
+
+    <div style="height:24px"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item"><i class="ti ti-home"></i>Home</div>
+    <div class="nav-item"><i class="ti ti-users"></i>Community</div>
+    <div class="nav-fab"><i class="ti ti-plus"></i></div>
+    <div class="nav-item active"><i class="ti ti-movie"></i>Library</div>
+    <div class="nav-item"><i class="ti ti-user"></i>Profile</div>
+  </div>
+</div>
+
+<div class="desktop-label">LIBRARY · INTERACTIVE MOCKUP</div>
+
+<script>
+// ── HELPERS ───────────────────────────────────────────────────
+function imgUrl(seed, w, h) { return `https://picsum.photos/seed/${seed}/${w}/${h}`; }
+
+function calDate(offsetFromToday) {
+  const base = new Date(2025, 4, 8); // May 8 2025
+  base.setDate(base.getDate() + offsetFromToday);
+  const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return {
+    wday:    days[base.getDay()],
+    dateNum: base.getDate(),
+    month:   months[base.getMonth()],
+    label:   `${months[base.getMonth()]} ${base.getDate()}`,
+  };
+}
+
+// ── DATA ──────────────────────────────────────────────────────
+const TODAY_IDX = 7; // index of today's film in the array
+
+const filmsRaw = [
+  // released (offset = days before today)
+  { title: 'Sátántangó',               meta: '1994 · Béla Tarr · 432 min',         host: 'Marina R.', av: 'MR', offset: -29, upcoming: false, watched: true,  live: false, seed: 'satantango', reason: 'Slow Cinema Masterpiece' },
+  { title: 'Jeanne Dielman',           meta: '1975 · Chantal Akerman · 201 min',   host: 'Ana L.',    av: 'AL', offset: -25, upcoming: false, watched: true,  live: false, seed: 'jeannedielman', reason: 'Feminist Classic' },
+  { title: 'The White Ribbon',         meta: '2009 · Michael Haneke · 144 min',    host: 'Carlos S.', av: 'CS', offset: -22, upcoming: false, watched: true,  live: false, seed: 'whiteribbon', reason: 'Award Winner' },
+  { title: 'Capernaum',                meta: '2018 · Nadine Labaki · 121 min',     host: 'Marina R.', av: 'MR', offset: -18, upcoming: false, watched: true,  live: false, seed: 'capernaum', reason: 'Oscar Nominee' },
+  { title: 'Burning',                  meta: '2018 · Lee Chang-dong · 148 min',    host: 'João P.',   av: 'JP', offset: -15, upcoming: false, watched: true,  live: false, seed: 'burningfilm', reason: 'Cannes Winner' },
+  { title: 'Roma',                     meta: '2018 · Alfonso Cuarón · 135 min',    host: 'Beatriz T.',av: 'BT', offset: -11, upcoming: false, watched: true,  live: true,  seed: 'romacuaron', reason: 'All Time Favorite' },
+  { title: 'Shoplifters',              meta: '2018 · Hirokazu Kore-eda · 121 min', host: 'Carlos S.', av: 'CS', offset:  -7, upcoming: false, watched: true,  live: false, seed: 'shoplifters', reason: 'Palme d\'Or Winner' },
+  { title: 'The Mirror',               meta: '1975 · Andrei Tarkovsky · 108 min',  host: 'João P.',   av: 'JP', offset:   0, upcoming: false, watched: false, live: false, seed: 'themirror', reason: 'All Time Favorite' },
+  // upcoming (offset = days after today)
+  { title: 'Portrait of a Lady on Fire', meta: '2019 · Céline Sciamma · 119 min', host: 'Marina R.', av: 'MR', offset:  +1, upcoming: true,  watched: false, live: false, seed: 'portraitfire', reason: 'Queer Romance' },
+  { title: 'Beau Travail',             meta: '1999 · Claire Denis · 92 min',       host: 'Ana L.',    av: 'AL', offset:  +2, upcoming: true,  watched: false, live: false, seed: 'beautravail', reason: 'Art House Gem' },
+  { title: 'Moonlight',                meta: '2016 · Barry Jenkins · 111 min',     host: 'João P.',   av: 'JP', offset:  +4, upcoming: true,  watched: false, live: false, seed: 'moonlightfilm', reason: 'Best Picture Winner' },
+  { title: 'Mulholland Drive',         meta: '2001 · David Lynch · 147 min',       host: 'Beatriz T.',av: 'BT', offset:  +6, upcoming: true,  watched: false, live: false, seed: 'mulholland', reason: 'Surreal Masterpiece' },
+  { title: 'La Ciénaga',               meta: '2001 · Lucrecia Martel · 103 min',   host: 'Carlos S.', av: 'CS', offset:  +7, upcoming: true,  watched: false, live: false, seed: 'lacienaga', reason: 'Latin American Cinema' },
+  { title: 'Yi Yi',                    meta: '2000 · Edward Yang · 173 min',       host: 'Marina R.', av: 'MR', offset:  +8, upcoming: true,  watched: false, live: false, seed: 'yiyifilm', reason: 'Taiwanese Classic' },
+  { title: 'Under the Skin',           meta: '2013 · Jonathan Glazer · 108 min',   host: 'Ana L.',    av: 'AL', offset:  +9, upcoming: true,  watched: false, live: false, seed: 'undertheskin', reason: 'Sci-Fi Horror' },
+  { title: 'Aftersun',                 meta: '2022 · Charlotte Wells · 101 min',   host: 'João P.',   av: 'JP', offset: +10, upcoming: true,  watched: false, live: false, seed: 'aftersun', reason: 'Critically Acclaimed' },
+  { title: 'The Zone of Interest',     meta: '2023 · Jonathan Glazer · 105 min',   host: 'Beatriz T.',av: 'BT', offset: +12, upcoming: true,  watched: false, live: false, seed: 'zoneofinterest', reason: 'Oscar Winner' },
+];
+
+// Enrich with computed dates + image URLs
+const films = filmsRaw.map(f => {
+  const d = calDate(f.offset);
+  return {
+    ...f,
+    wday:     d.wday,
+    dateNum:  d.dateNum,
+    month:    d.month,
+    label:    d.label,
+    img:      imgUrl(f.seed, 300, 440),
+    imgHero:  imgUrl(f.seed, 800, 500),
+    imgThumb: imgUrl(f.seed, 92, 135),
+  };
+});
+
+const hostPhotos = {
+  'MR': 'https://randomuser.me/api/portraits/women/44.jpg',
+  'JP': 'https://randomuser.me/api/portraits/men/32.jpg',
+  'CS': 'https://randomuser.me/api/portraits/men/67.jpg',
+  'AL': 'https://randomuser.me/api/portraits/women/21.jpg',
+  'BT': 'https://randomuser.me/api/portraits/women/58.jpg',
+};
+
+const searchDB = {
+  movies: [
+    { title: 'Burning',                  sub: '2018 · Lee Chang-dong', seed: 'burningfilm' },
+    { title: 'Roma',                     sub: '2018 · Alfonso Cuarón', seed: 'romacuaron' },
+    { title: 'The Mirror',               sub: '1975 · Andrei Tarkovsky', seed: 'themirror' },
+    { title: 'Moonlight',                sub: '2016 · Barry Jenkins', seed: 'moonlightfilm' },
+    { title: 'Shoplifters',              sub: '2018 · Hirokazu Kore-eda', seed: 'shoplifters' },
+    { title: 'Aftersun',                 sub: '2022 · Charlotte Wells', seed: 'aftersun' },
+    { title: 'Portrait of a Lady on Fire', sub: '2019 · Céline Sciamma', seed: 'portraitfire' },
+    { title: 'Mulholland Drive',         sub: '2001 · David Lynch', seed: 'mulholland' },
+    { title: 'Sátántangó',               sub: '1994 · Béla Tarr', seed: 'satantango' },
+  ],
+  keywords: [
+    { title: 'Romance',  sub: '4 films', icon: 'ti-heart' },
+    { title: 'Memory',   sub: '6 films', icon: 'ti-brain' },
+    { title: 'Identity', sub: '8 films', icon: 'ti-fingerprint' },
+    { title: 'Violence', sub: '5 films', icon: 'ti-alert-triangle' },
+    { title: 'Politics', sub: '7 films', icon: 'ti-building-bank' },
+    { title: 'Family',   sub: '5 films', icon: 'ti-home-heart' },
+  ],
+  hosts: [
+    { title: 'João P.',    sub: '5 films this month', initials: 'JP', photo: hostPhotos.JP },
+    { title: 'Marina R.',  sub: '3 films this month', initials: 'MR', photo: hostPhotos.MR },
+    { title: 'Carlos S.',  sub: '4 films this month', initials: 'CS', photo: hostPhotos.CS },
+    { title: 'Ana L.',     sub: '2 films this month', initials: 'AL', photo: hostPhotos.AL },
+    { title: 'Beatriz T.', sub: '2 films this month', initials: 'BT', photo: hostPhotos.BT },
+  ]
+};
+
+// ── BUILD POSTER SCROLL ───────────────────────────────────────
+function buildPosterScroll() {
+  const scroll = document.getElementById('posterScroll');
+  scroll.innerHTML = '';
+  films.forEach((f, i) => {
+    const item = document.createElement('div');
+    item.className = 'poster-item' + (i === TODAY_IDX ? ' today' : '') + (f.upcoming ? ' upcoming' : '');
+    if (i === TODAY_IDX) item.id = 'todayPoster';
+
+    item.innerHTML = `
+      <div class="poster-img-wrap">
+        <img src="${f.img}" alt="${f.title}" loading="lazy" onerror="this.style.background='#1C1C1C'">
+        ${f.live && !f.upcoming ? '<div class="live-badge">LIVE</div>' : ''}
+        ${f.upcoming ? '<div class="poster-lock"><i class="ti ti-lock"></i></div>' : ''}
+        ${f.watched && !f.upcoming ? '<div class="poster-watched"></div>' : ''}
+        <div class="poster-date-badge">
+          <span class="pday">${f.month.toUpperCase()}</span>
+          <span class="pnum">${f.dateNum}</span>
+        </div>
+        <div class="poster-inner-grad">
+          <div class="poster-inner-title">${f.title}</div>
+        </div>
+      </div>
+    `;
+    item.addEventListener('click', () => selectFilm(i));
+    scroll.appendChild(item);
+  });
+}
+
+// ── SELECT FILM ───────────────────────────────────────────────
+function selectFilm(i) {
+  const f = films[i];
+  document.getElementById('heroPoster').src = f.imgHero;
+  document.getElementById('heroTitle').textContent = f.title;
+  document.getElementById('heroMeta').textContent = f.meta;
+  const avImg = document.getElementById('heroAvImg');
+  if (avImg) avImg.src = hostPhotos[f.av] || '';
+  document.getElementById('heroHostName').textContent = f.reason;
+  document.getElementById('heroDay').textContent = f.label.toUpperCase();
+
+  const pill = document.getElementById('heroPill');
+  const btn  = document.getElementById('heroBtn');
+  const btnText = document.getElementById('heroBtnText');
+  const btnIcon = btn.querySelector('i');
+
+  if (i === TODAY_IDX) {
+    pill.textContent = 'TODAY'; pill.className = 'today-pill today';
+    btn.className = 'watch-btn'; btnText.textContent = 'Watch now';
+    btnIcon.className = 'ti ti-player-play';
+  } else if (f.upcoming) {
+    pill.textContent = 'UPCOMING'; pill.className = 'today-pill upcoming';
+    btn.className = 'watch-btn notify'; btnText.textContent = 'Notify me';
+    btnIcon.className = 'ti ti-bell';
+  } else {
+    pill.textContent = 'RELEASED'; pill.className = 'today-pill released';
+    btn.className = 'watch-btn'; btnText.textContent = 'Watch now';
+    btnIcon.className = 'ti ti-player-play';
+  }
+  btnIcon.style.fontSize = '11px';
+
+  document.querySelectorAll('.poster-item').forEach((el, idx) => {
+    el.classList.toggle('selected', idx === i);
+  });
+}
+
+// ── CENTER TODAY ──────────────────────────────────────────────
+function centerToday() {
+  const scroll = document.getElementById('posterScroll');
+  const todayEl = document.getElementById('todayPoster');
+  if (!todayEl) return;
+  const itemW   = 80 + 10;
+  const paddingL = 20;
+  const scrollW = scroll.clientWidth;
+  scroll.scrollLeft = Math.max(0, paddingL + TODAY_IDX * itemW - scrollW / 2 + 40);
+}
+
+// ── SEARCH ────────────────────────────────────────────────────
+function highlight(text, q) {
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if (i === -1) return text;
+  return text.slice(0,i) + '<span class="hi">' + text.slice(i,i+q.length) + '</span>' + text.slice(i+q.length);
+}
+
+// All searchable items in a flat list with priority weight
+const allItems = [
+  // films (weight = trending popularity)
+  { type:'film', title:'The Mirror',               sub:'1975 · Tarkovsky',        seed:'themirror',    weight:10 },
+  { type:'film', title:'Burning',                  sub:'2018 · Lee Chang-dong',   seed:'burningfilm',  weight:9  },
+  { type:'film', title:'Roma',                     sub:'2018 · Alfonso Cuarón',   seed:'romacuaron',   weight:8  },
+  { type:'film', title:'Moonlight',                sub:'2016 · Barry Jenkins',    seed:'moonlightfilm',weight:8  },
+  { type:'film', title:'Shoplifters',              sub:'2018 · Kore-eda',         seed:'shoplifters',  weight:7  },
+  { type:'film', title:'Portrait of a Lady on Fire',sub:'2019 · Céline Sciamma', seed:'portraitfire', weight:7  },
+  { type:'film', title:'Aftersun',                 sub:'2022 · Charlotte Wells',  seed:'aftersun',     weight:9  },
+  { type:'film', title:'Mulholland Drive',         sub:'2001 · David Lynch',      seed:'mulholland',   weight:6  },
+  { type:'film', title:'Sátántangó',               sub:'1994 · Béla Tarr',        seed:'satantango',   weight:6  },
+  // keywords (weight = film count proxy)
+  { type:'kw', title:'Romance',    sub:'Mood · 4 films',  icon:'ti-heart',          weight:8 },
+  { type:'kw', title:'Identity',   sub:'Theme · 8 films', icon:'ti-fingerprint',    weight:9 },
+  { type:'kw', title:'Memory',     sub:'Theme · 6 films', icon:'ti-brain',          weight:7 },
+  { type:'kw', title:'Slow Cinema',sub:'Genre · 5 films', icon:'ti-ripple',         weight:6 },
+  { type:'kw', title:'Korean New Wave',sub:'Movement · 4 films',icon:'ti-movie',    weight:7 },
+  { type:'kw', title:'Politics',   sub:'Theme · 7 films', icon:'ti-building-bank',  weight:8 },
+  { type:'kw', title:'Melancholic',sub:'Mood · 8 films',  icon:'ti-cloud-rain',     weight:9 },
+  // hosts
+  { type:'host', title:'João P.',    sub:'5 films this month', photo:'https://randomuser.me/api/portraits/men/32.jpg',    weight:9 },
+  { type:'host', title:'Marina R.',  sub:'3 films this month', photo:'https://randomuser.me/api/portraits/women/44.jpg',  weight:8 },
+  { type:'host', title:'Carlos S.',  sub:'4 films this month', photo:'https://randomuser.me/api/portraits/men/67.jpg',    weight:7 },
+  { type:'host', title:'Ana L.',     sub:'2 films this month', photo:'https://randomuser.me/api/portraits/women/21.jpg',  weight:6 },
+  { type:'host', title:'Beatriz T.', sub:'2 films this month', photo:'https://randomuser.me/api/portraits/women/58.jpg',  weight:6 },
+];
+
+// Trending = top items by weight, mixed types
+const trending = [...allItems].sort((a,b) => b.weight - a.weight).slice(0, 7);
+
+function ddItemHTML(item, q) {
+  const titleHTML = q ? highlight(item.title, q) : item.title;
+  if (item.type === 'film') {
+    return `<div class="dd-item">
+      <img class="dd-thumb" src="${imgUrl(item.seed,92,135)}" loading="lazy" onerror="this.style.background='#1C1C1C'">
+      <div class="dd-info"><div class="dd-title">${titleHTML}</div><div class="dd-sub">${item.sub}</div></div>
+      <span class="dd-tag film">FILM</span>
+    </div>`;
+  } else if (item.type === 'kw') {
+    return `<div class="dd-item">
+      <div class="dd-kw-icon"><i class="ti ${item.icon}"></i></div>
+      <div class="dd-info"><div class="dd-title">${titleHTML}</div><div class="dd-sub">${item.sub}</div></div>
+      <span class="dd-tag kw">KEYWORD</span>
+    </div>`;
+  } else {
+    return `<div class="dd-item">
+      <img class="dd-host-av" src="${item.photo}" loading="lazy">
+      <div class="dd-info"><div class="dd-title">${titleHTML}</div><div class="dd-sub">${item.sub}</div></div>
+      <span class="dd-tag host">HOST</span>
+    </div>`;
+  }
+}
+
+function renderDropdown(q) {
+  const dropdown = document.getElementById('searchDropdown');
+
+  if (!q) {
+    // Show trending
+    let html = '<div class="dd-header">TRENDING</div>';
+    html += trending.map(item => ddItemHTML(item, '')).join('');
+    dropdown.innerHTML = html;
+    dropdown.classList.add('show');
+    return;
+  }
+
+  // Filter all items by query, sort by weight descending
+  const results = allItems
+    .filter(item => item.title.toLowerCase().includes(q.toLowerCase()))
+    .sort((a,b) => b.weight - a.weight)
+    .slice(0, 8);
+
+  if (!results.length) {
+    dropdown.innerHTML = `<div style="padding:18px;text-align:center;font-size:13px;color:var(--text4)">No results for "${q}"</div>`;
+  } else {
+    dropdown.innerHTML = results.map(item => ddItemHTML(item, q)).join('');
+  }
+  dropdown.classList.add('show');
+}
+
+// ── EXPLORE ───────────────────────────────────────────────────
+const exploreData = {
+  genre: { items: [
+    { label:'Drama',        icon:'ti-masks-theater', sub:['Slow Cinema','Neorealism','Social Realism','Melodrama','Kitchen Sink'] },
+    { label:'Comedy',       icon:'ti-mood-smile',    sub:['Dark Comedy','Satire','Absurdist','Screwball'] },
+    { label:'Documentary',  icon:'ti-video',         sub:['Observational','Essay Film','Mockumentary','Expository'] },
+    { label:'Horror',       icon:'ti-ghost',         sub:['Folk Horror','Psychological','Body Horror','Supernatural'] },
+    { label:'Thriller',     icon:'ti-eye',           sub:['Neo-noir','Paranoia','Crime','Spy'] },
+    { label:'Romance',      icon:'ti-heart',         sub:['Unrequited','Long-distance','Forbidden','Queer'] },
+    { label:'Sci-Fi',       icon:'ti-rocket',        sub:['Dystopian','Space','Philosophical','Cyberpunk'] },
+  ]},
+  mood: { items: [
+    { label:'Melancholic',  icon:'ti-cloud-rain',    sub:['Quiet Sadness','Grief','Nostalgia','Regret','Longing'] },
+    { label:'Tense',        icon:'ti-bolt',          sub:['Dread','Suspense','Paranoia','Claustrophobic'] },
+    { label:'Hopeful',      icon:'ti-sun',           sub:['Coming-of-age','Redemption','Bittersweet'] },
+    { label:'Unsettling',   icon:'ti-eye-off',       sub:['Uncanny','Surreal','Disturbing','Dreamlike'] },
+    { label:'Meditative',   icon:'ti-ripple',        sub:['Slow','Contemplative','Minimal','Hypnotic'] },
+    { label:'Playful',      icon:'ti-confetti',      sub:['Whimsical','Energetic','Irreverent'] },
+  ]},
+  theme: { items: [
+    { label:'Identity',     icon:'ti-fingerprint',   sub:['Race','Gender','Class','Self','Belonging'] },
+    { label:'Memory',       icon:'ti-brain',         sub:['Trauma','Amnesia','Nostalgia','Inherited'] },
+    { label:'Power',        icon:'ti-crown',         sub:['Authority','Corruption','Resistance','Surveillance'] },
+    { label:'Love',         icon:'ti-heart',         sub:['Eros','Obsession','Loss','Platonic'] },
+    { label:'Politics',     icon:'ti-building-bank', sub:['War','Revolution','Propaganda','Colonialism'] },
+    { label:'Family',       icon:'ti-users',         sub:['Parenthood','Siblings','Dysfunction','Legacy'] },
+    { label:'Alienation',   icon:'ti-user-off',      sub:['Isolation','Outsider','Urban Loneliness'] },
+  ]},
+  guide: { items: [
+    { label:'For Every Occasion', icon:'ti-calendar-event', sub:["Date Night","Solo Watch","Group Viewing","Rainy Day","Can't Sleep"] },
+    { label:'Cinema Movement',    icon:'ti-movie',          sub:['French New Wave','Italian Neorealism','Iranian Cinema','Korean New Wave','Mumblecore','Dogme 95'] },
+    { label:'Era',                icon:'ti-clock-hour-4',   sub:['1950s','1960s','1970s','1980s','1990s','2000s','2010s','2020s'] },
+    { label:'Country',            icon:'ti-world',          sub:['South Korea','France','Japan','Iran','Mexico','Romania','Taiwan'] },
+    { label:'Director Focus',     icon:'ti-user-star',      sub:['Tarkovsky','Akerman','Kore-eda','Lynch','Sciamma','Haneke','Denis'] },
+  ]},
+};
+
+const L1_ORDER  = ['genre','mood','theme','guide'];
+const L1_LABELS = {genre:'Genre', mood:'Mood', theme:'Theme', guide:'Guide'};
+
+let activeL1   = 'genre';
+let expandedL2 = new Set();  // multiple L2 can be open simultaneously
+let selectedL3 = new Set();  // "L2::L3" keys
+
+function setL1(key) {
+  activeL1   = key;
+  expandedL2 = new Set();
+  selectedL3 = new Set();
+  renderL1();
+  renderChips();
+}
+
+function toggleL2(label) {
+  if (expandedL2.has(label)) expandedL2.delete(label);
+  else expandedL2.add(label);
+  renderChips();
+}
+
+function toggleL3(l2, l3) {
+  const key = l2 + '::' + l3;
+  if (selectedL3.has(key)) selectedL3.delete(key);
+  else selectedL3.add(key);
+  renderChips();
+}
+
+function renderL1() {
+  const tabs = document.getElementById('exploreL1');
+  if (!tabs) return;
+  tabs.innerHTML = '';
+  L1_ORDER.forEach(key => {
+    const t = document.createElement('div');
+    t.className = 'el1-tab' + (activeL1 === key ? ' active' : '');
+    t.textContent = L1_LABELS[key];
+    t.onclick = () => setL1(key);
+    tabs.appendChild(t);
+  });
+}
+
+function renderChips() {
+  const area = document.getElementById('exploreL2');
+  if (!area) return;
+  area.innerHTML = '';
+
+  const items = exploreData[activeL1].items;
+  items.forEach(item => {
+    const isExpanded = expandedL2.has(item.label);
+
+    // L2 chip
+    const chip = document.createElement('div');
+    chip.className = 'el2-chip' + (isExpanded ? ' active' : '');
+    chip.innerHTML = `<i class="ti ${item.icon}"></i><span class="lbl">${item.label}</span>`;
+    chip.onclick = () => toggleL2(item.label);
+    area.appendChild(chip);
+
+    // L3 chips injected inline right after this L2 when expanded
+    if (isExpanded && item.sub) {
+      item.sub.forEach((sub, si) => {
+        const key = item.label + '::' + sub;
+        const s = document.createElement('div');
+        s.className = 'el3-chip' + (selectedL3.has(key) ? ' active' : '');
+        s.style.animationDelay = (si * 0.03) + 's';
+        s.textContent = sub;
+        s.onclick = () => toggleL3(item.label, sub);
+        area.appendChild(s);
+      });
+    }
+  });
+}
+
+// ── EVENTS ────────────────────────────────────────────────────
+const input      = document.getElementById('searchInput');
+const searchBar  = document.getElementById('searchBar');
+const clearBtn   = document.getElementById('clearBtn');
+const dropdown   = document.getElementById('searchDropdown');
+
+input.addEventListener('input', () => {
+  const q = input.value.trim();
+  clearBtn.style.display = q ? 'block' : 'none';
+  searchBar.classList.toggle('active', !!q);
+  renderDropdown(q);
+});
+input.addEventListener('focus', () => {
+  searchBar.classList.add('active');
+  renderDropdown(input.value.trim()); // always show trending or results on focus
+});
+input.addEventListener('blur', () => {
+  setTimeout(() => {
+    dropdown.classList.remove('show');
+    if (!input.value.trim()) searchBar.classList.remove('active');
+  }, 200);
+});
+clearBtn.addEventListener('click', () => {
+  input.value = '';
+  clearBtn.style.display = 'none';
+  searchBar.classList.remove('active');
+  dropdown.classList.remove('show');
+  input.focus();
+});
+
+// ── INIT ──────────────────────────────────────────────────────
+buildPosterScroll();
+selectFilm(TODAY_IDX);
+renderChips();
+window.addEventListener('load', () => {
+  requestAnimationFrame(() => requestAnimationFrame(centerToday));
+});
+</script>
+</body>
+</html>
